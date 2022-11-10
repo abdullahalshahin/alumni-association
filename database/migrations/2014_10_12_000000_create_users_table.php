@@ -13,25 +13,28 @@ return new class extends Migration {
     public function up() {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('registration_number', 6)->unique();
+            $table->unsignedTinyInteger('user_type')->default(2)->comment('0 = admin, 1 = teacher, 2 = student');
+            $table->string('registration_number', 6)->unique()->nullable();
+            $table->unsignedBigInteger('batch_id')->nullable();
             $table->string('name');
-            $table->string('date_of_birth', 10);
-            $table->unsignedTinyInteger('gender')->comment('1 = male, 2 = female, 3 = others');
             $table->string('contact_number', 15)->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('security');
+            $table->unsignedTinyInteger('gender')->comment('1 = male, 2 = female, 3 = others');
+            $table->string('date_of_birth', 10)->nullable();
+            $table->double('earning_credit', 8, 2)->nullable();
             $table->string('occupation')->nullable();
-            $table->string('position')->nullable();
             $table->string('guardian_name')->nullable();
             $table->string('guardian_contact_number', 15)->nullable();
-            $table->text('address');
+            $table->text('address')->nullable();
+            $table->string('biography', 120)->nullable();
             $table->string('image')->nullable();
-            $table->unsignedTinyInteger('user_type')->comment('0 = admin, 1 = teacher, 2 = student');
-            $table->unsignedTinyInteger('status')->comment('0 = blocked, 1 = active, 2 = inactive');
+            $table->unsignedTinyInteger('status')->default(1)->comment('0 = inactive, 1 = active, 2 = blocked');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

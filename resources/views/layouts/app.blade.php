@@ -43,16 +43,10 @@
                             <div class="collapse" id="sidebarDashboards">
                                 <ul class="side-nav-second-level">
                                     <li>
-                                        <a href="dashboard-analytics.html">Analytics</a>
+                                        <a href="{{ route('dashboard') }}">Analytics</a>
                                     </li>
                                     <li>
-                                        <a href="dashboard-crm.html">CRM</a>
-                                    </li>
-                                    <li>
-                                        <a href="index.html">Ecommerce</a>
-                                    </li>
-                                    <li>
-                                        <a href="dashboard-projects.html">Projects</a>
+                                        <a href="{{ url('') }}">Alumni Request <span class="badge rounded-pill bg-light text-dark font-10 float-end">New</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -61,14 +55,7 @@
                         <li class="side-nav-title side-nav-item">Apps</li>
 
                         <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
-                                <i class="uil-game-structure"></i>
-                                <span> Branches </span>
-                            </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
+                            <a href="{{ route('students.index') }}" class="side-nav-link">
                                 <i class="uil-graduation-hat"></i>
                                 <span> Students </span>
                             </a>
@@ -77,70 +64,22 @@
                         <li class="side-nav-item">
                             <a href="{{ url('') }}" class="side-nav-link">
                                 <i class="uil-file-check-alt"></i>
-                                <span> Course Participants </span>
+                                <span> Alumnus </span>
                             </a>
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
-                                <i class="uil-notebooks"></i>
-                                <span> Courses </span>
-                            </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
-                                <i class="uil-swatchbook"></i>
-                                <span> Batches </span>
-                            </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
-                                <i class="uil-calender"></i>
-                                <span> Schedules </span>
-                            </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
+                            <a href="{{ url('teachers.index') }}" class="side-nav-link">
                                 <i class="dripicons-user-id"></i>
                                 <span> Teachers </span>
                             </a>
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
-                                <i class="uil-book-alt"></i>
-                                <span> Subjects </span>
+                            <a href="apps-chat.html" class="side-nav-link">
+                                <i class="uil-shutter-alt"></i>
+                                <span> Events </span>
                             </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#Exams" aria-expanded="false" aria-controls="Exams" class="side-nav-link">
-                                <i class="uil-file-edit-alt"></i>
-                                <span> Exams </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="Exams">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ url('') }}">Question Bank</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ url('') }}">Question Paper</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ url('') }}">Exams</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ url('') }}">Results</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
 
                         <li class="side-nav-item">
@@ -150,55 +89,12 @@
                             </a>
                         </li>
 
-                        <li class="side-nav-item">
+                        {{-- <li class="side-nav-item">
                             <a href="apps-chat.html" class="side-nav-link">
                                 <i class="uil-rss"></i>
                                 <span> Blog Posts </span>
                             </a>
-                        </li>
-                        
-                        <li class="side-nav-item">
-                            <a href="apps-chat.html" class="side-nav-link">
-                                <i class="uil-comments-alt"></i>
-                                <span> Chat </span>
-                            </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#Expense" aria-expanded="false" aria-controls="Expense" class="side-nav-link">
-                                <i class="uil-bill"></i>
-                                <span> Expenses </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="Expense">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ url('expenses.index') }}">Expense</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('expense-categories.index') }}">Expense Category</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#Reports" aria-expanded="false" aria-controls="Reports" class="side-nav-link">
-                                <i class="uil-chart-bar"></i>
-                                <span> Reports </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="Reports">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ url('/reports/payments') }}">Payments</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('/reports/patient-reports') }}">Students Report</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        </li> --}}
 
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#RecycleBin" aria-expanded="false" aria-controls="RecycleBin" class="side-nav-link">
@@ -215,8 +111,11 @@
                                         <a href="{{ url('user-restore') }}">Students</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('user-restore') }}">Courses</a>
+                                        <a href="{{ url('user-restore') }}">Teachers</a>
                                     </li>
+                                    {{-- <li>
+                                        <a href="{{ url('user-restore') }}">Posts</a>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </li>
@@ -243,34 +142,12 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#Settings" aria-expanded="false" aria-controls="Settings" class="side-nav-link">
+                            <a href="apps-chat.html" class="side-nav-link">
                                 <i class="dripicons-gear noti-icon"></i>
                                 <span> Settings </span>
-                                <span class="menu-arrow"></span>
                             </a>
-
-                            <div class="collapse" id="Settings">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ url('system-settings') }}"> System Settings </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('prescription-settings') }}"> Prescription Settings </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                     </ul>
-
-                    <div class="help-box text-white text-center alert">
-                        <a href="javascript: void(0);" class="float-end close-btn text-white" data-bs-dismiss="alert">
-                            <i class="mdi mdi-close"></i>
-                        </a>
-                        <img src="{{ asset('assets/images/help-icon.svg') }}" height="90" alt="Helper Icon Image" />
-                        <h5 class="mt-3">Unlimited Access</h5>
-                        <p class="mb-3">Upgrade to plan to get access to unlimited reports</p>
-                        <a href="javascript: void(0);" class="btn btn-outline-light btn-sm">Upgrade</a>
-                    </div>
 
                     <div class="clearfix"></div>
                 </div>
@@ -581,6 +458,7 @@
 
         <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
         <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/sweetalert2@11') }}"></script>
         {{ $script ?? '' }}
     </body>
 </html>
