@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
+use App\Models\Department;
 use App\Models\Session;
 use Illuminate\Http\Request;
 
-class SessionController extends Controller
-{
+class SessionController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $sesiones = Session::get();
+
+        return view('sesiones.index', compact('sesiones'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function data(Session $session) {
+        return [
+            'sesiones' => $session,
+            'batches' => Batch::where('status', 1)->get(['id', 'name'])
+        ];
     }
 
     /**
@@ -22,9 +32,8 @@ class SessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('sesiones.create', $this->data(new Session()));
     }
 
     /**
@@ -33,9 +42,21 @@ class SessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'batch_id' => ['required'],
+            'inputState' => ['required']
+        ]);
+
+        $session = Session::create([
+            'name' => $request->name,
+            'batch_id' => $request->batch_id,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('sesiones.index')
+            ->with('success', 'Department created successfully.');
     }
 
     /**
@@ -44,8 +65,7 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function show(Session $session)
-    {
+    public function show(Session $session) {
         //
     }
 
@@ -55,8 +75,7 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function edit(Session $session)
-    {
+    public function edit(Session $session) {
         //
     }
 
@@ -67,8 +86,7 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Session $session)
-    {
+    public function update(Request $request, Session $session) {
         //
     }
 
@@ -78,8 +96,7 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Session $session)
-    {
+    public function destroy(Session $session) {
         //
     }
 }

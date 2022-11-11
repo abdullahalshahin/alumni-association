@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('teacher_id')->index();
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->string('topic_name');
-            $table->unsignedTinyInteger('status')->comment('0 = inactive, 1 = active');
+            $table->unsignedTinyInteger('status')->comment('0 = incomplete, 1 = complete');
             $table->timestamps();
             $table->softDeletes();
         });

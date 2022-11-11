@@ -5,16 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use Illuminate\Http\Request;
 
-class DepartmentController extends Controller
-{
+class DepartmentController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $departments = Department::get();
+
+        return view('departments.index', compact('departments'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function data(Department $department) {
+        return [
+            'departments' => $department,
+        ];
     }
 
     /**
@@ -22,9 +29,8 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('departments.create', $this->data(new Department()));
     }
 
     /**
@@ -33,9 +39,25 @@ class DepartmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'code' => ['required', 'string', 'max:6'],
+            'shift' => ['required'],
+            'total_credit' => ['required'],
+            'inputState' => ['required']
+        ]);
+
+        $department = Department::create([
+            'name' => $request->name,
+            'code' => $request->code,
+            'shift' => $request->shift,
+            'total_credit' => $request->total_credit,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('departments.index')
+            ->with('success','Department created successfully.');
     }
 
     /**
@@ -44,9 +66,8 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
-    {
-        //
+    public function show(Department $department) {
+        return view('departments.show', $this->data($department));
     }
 
     /**
@@ -55,8 +76,7 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
-    {
+    public function edit(Department $department) {
         //
     }
 
@@ -67,8 +87,7 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $department)
-    {
+    public function update(Request $request, Department $department) {
         //
     }
 
@@ -78,8 +97,7 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
-    {
+    public function destroy(Department $department) {
         //
     }
 }

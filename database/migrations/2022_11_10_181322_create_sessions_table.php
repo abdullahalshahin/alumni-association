@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->foreign('batch_id')->references('id')->on('batches');
             $table->unsignedTinyInteger('status')->comment('0 = inactive, 1 = active, 2 = closed');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

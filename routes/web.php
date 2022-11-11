@@ -27,6 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('teachers', TeacherController::class);
     Route::resource('students', StudentController::class);
+
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('batches', BatchController::class);
+    Route::resource('sesiones', SessionController::class);
+    Route::resource('groups', GroupController::class);
+    Route::resource('defences', DefenceController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -3,18 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
-class BatchController extends Controller
-{
+class BatchController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $batches = Batch::get();
+
+        return view('batches.index', compact('batches'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function data(Batch $batch) {
+        return [
+            'batches' => $batch,
+            'departments' => Department::where('status', 1)->get(['id', 'name']),
+        ];
     }
 
     /**
@@ -22,9 +31,8 @@ class BatchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('batches.create', $this->data(new Batch()));
     }
 
     /**
@@ -33,9 +41,23 @@ class BatchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'year' => ['required'],
+            'department_id' => ['required'],
+            'inputState' => ['required']
+        ]);
+
+        $batch = Batch::create([
+            'name' => $request->name,
+            'year' => $request->year,
+            'department_id' => $request->department_id,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('batches.index')
+            ->with('success','Department created successfully.');
     }
 
     /**
@@ -44,8 +66,7 @@ class BatchController extends Controller
      * @param  \App\Models\Batch  $batch
      * @return \Illuminate\Http\Response
      */
-    public function show(Batch $batch)
-    {
+    public function show(Batch $batch) {
         //
     }
 
@@ -55,8 +76,7 @@ class BatchController extends Controller
      * @param  \App\Models\Batch  $batch
      * @return \Illuminate\Http\Response
      */
-    public function edit(Batch $batch)
-    {
+    public function edit(Batch $batch) {
         //
     }
 
@@ -67,8 +87,7 @@ class BatchController extends Controller
      * @param  \App\Models\Batch  $batch
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Batch $batch)
-    {
+    public function update(Request $request, Batch $batch) {
         //
     }
 
@@ -78,8 +97,7 @@ class BatchController extends Controller
      * @param  \App\Models\Batch  $batch
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Batch $batch)
-    {
+    public function destroy(Batch $batch) {
         //
     }
 }
