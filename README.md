@@ -9,15 +9,18 @@
 
 ## Project Installation Requirements
 
-step-1. Cloning this project. "https://github.com/abdullahalshahin/alumni_association"
-step-2. Download and install [XAMPP 8](https://www.apachefriends.org/download.html).
-step-3. Create database "alumni_association"
-step-4. Open this project on Code editor like Visual Studio Code.
-step-5. Open the Terminal and run this command step by step...
-    - composer install
-    - npm install 
-    - cp .env.example .env
-    - php artisan key:generate
-    - php artisan migrate
-    - php artisan db:seed
-    - php artisan serve
+- **step-1. Cloning this project. "https://github.com/abdullahalshahin/alumni_association"
+- **step-2. Download and install [XAMPP 8](https://www.apachefriends.org/download.html).
+- **step-3. Create database "alumni_association"
+- **step-4. Open this project on Code editor like Visual Studio Code.
+- **step-5. Open the Terminal and run this command step by step...
+
+```
+composer install
+npm install 
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+php artisan serve
+```
