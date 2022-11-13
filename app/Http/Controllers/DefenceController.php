@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\Defence;
+use App\Models\Department;
 use App\Models\Group;
+use App\Models\Session;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,6 +28,9 @@ class DefenceController extends Controller {
     public function data(Defence $defence) {
         return [
             'defences' => $defence,
+            'departments' => Department::where('status', 1)->get(['id', 'name']),
+            'batches' => Batch::where('status', 1)->get(['id', 'name']),
+            'sesiones' => Session::where('status', 1)->get(['id', 'name']),
             'groups' => Group::get(['id', 'name']),
             'students' => User::where('user_type', 2)->get(['id', 'name'])
         ];
@@ -46,6 +52,7 @@ class DefenceController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        return $request;
         $request->validate([
             'date' => ['required'],
             'group_id' => ['required'],

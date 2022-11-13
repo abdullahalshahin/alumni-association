@@ -11,10 +11,10 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Batch List</li>
+                            <li class="breadcrumb-item active">Defence List</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Batches</h4>
+                    <h4 class="page-title">Defences</h4>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <a href="{{ route('batches.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Batch</a>
+                                <a href="{{ route('defences.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Defence</a>
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
@@ -53,15 +53,19 @@
                                             </div>
                                         </th>
                                         <th>SL</th>
-                                        <th>Department</th>
+                                        <th>Student</th>
+                                        <th>Group</th>
+                                        <th>Session</th>
                                         <th>Batch</th>
-                                        <th>Year</th>
+                                        <th>Department</th>
+                                        <th>Teacher</th>
+                                        <th>Topic</th>
                                         <th>Status</th>
                                         <th style="width: 75px;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($batches as $batch)
+                                    @foreach ($defences as $defence)
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -70,23 +74,24 @@
                                                 </div>
                                             </td>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ $batch->department->name ?? '' }}</td>
-                                            <td>{{ $batch->name ?? '' }}</td>
-                                            <td>{{ $batch->year ?? '' }}</td>
+                                            <td>{{ $group->name ?? '' }}</td>
+                                            <td>{{ $group->session->name ?? '' }}</td>
+                                            <td>{{ $group->session->batch->name ?? '' }}</td>
+                                            <td>{{ $group->session->batch->department->name ?? '' }}</td>
+                                            <td>{{ $group->teacher->name ?? '' }}</td>
+                                            <td>{{ $group->topic_name ?? '' }}</td>
                                             <td>
-                                                @if ($batch->status == 0)
-                                                    <span class="badge badge-warning-lighten">Inactive</span>
-                                                @elseif ($batch->status == 1)
-                                                    <span class="badge badge-success-lighten">Active</span>
-                                                @elseif ($batch->status == 2)
-                                                    <span class="badge badge-danger-lighten">Closed</span>
+                                                @if ($group->status == 0)
+                                                    <span class="badge badge-warning-lighten">Incomplete</span>
+                                                @elseif ($group->status == 1)
+                                                    <span class="badge badge-success-lighten">Complete</span>
                                                 @endif
                                             </td>
         
                                             <td>
-                                                <form action="{{ route('batches.destroy', $batch->id) }}" method="POST">
-                                                    <a href="{{ route('batches.show', $batch->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
-                                                    <a href="{{ route('batches.edit', $batch->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <form action="{{ route('defences.destroy', $defence->id) }}" method="POST">
+                                                    <a href="{{ route('defences.show', $defence->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
+                                                    <a href="{{ route('defences.edit', $defence->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
 
                                                     @csrf
                                                     @method('DELETE')
@@ -114,7 +119,7 @@
         <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
 
-        <script src="{{ asset('assets/js/pages/demo.batches.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/demo.defences.js') }}"></script>
 
         <script>
             $('#notificationAlert').delay(3000).fadeOut('slow');     

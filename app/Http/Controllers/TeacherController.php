@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class TeacherController extends Controller {
     /**
@@ -12,7 +14,17 @@ class TeacherController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //
+        $teachers = User::where('user_type', 1)->get();
+
+        return view('teachers.index', compact('teachers'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    public function data(User $user) {
+        return [
+            'teachers' => $user,
+            'roles' => Role::get(['id', 'name'])
+        ];
     }
 
     /**
@@ -21,7 +33,7 @@ class TeacherController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+        return view('teachers.create', $this->data(new User()));
     }
 
     /**
@@ -31,7 +43,42 @@ class TeacherController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'numeric'],
+            'date_of_birth' => ['required'],
+            'contact_number' => ['required', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'min:6'],
+            'address' => ['required', 'string'],
+            'inputState' => ['required']
+        ]);
+
+        if ($image = $request->file('image')) {
+            $destinationPath = 'images/users/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $image_name = "$profileImage";
+        }
+
+        $user = User::create([
+            'user_type' => 1,
+            'name' => $request->name,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'contact_number' => $request->contact_number,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'security' => $request->password,
+            'image' => ($request->file('image')) ? $image_name : '',
+            'address' => $request->address,
+            'status' => $request->inputState
+        ]);
+
+        $user->assignRole($request->roles);
+
+        return redirect()->route('teachers.index')
+            ->with('success','Teacher created successfully.');
     }
 
     /**
@@ -40,7 +87,7 @@ class TeacherController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user) {
+    public function show(User $teacher) {
         //
     }
 
@@ -50,7 +97,7 @@ class TeacherController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user) {
+    public function edit(User $teacher) {
         //
     }
 
@@ -61,7 +108,7 @@ class TeacherController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user) {
+    public function update(Request $request, User $teacher) {
         //
     }
 
@@ -71,7 +118,7 @@ class TeacherController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user) {
+    public function destroy(User $teacher) {
         //
     }
 }

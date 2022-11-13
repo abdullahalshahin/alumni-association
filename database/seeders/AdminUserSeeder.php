@@ -24,7 +24,6 @@ class AdminUserSeeder extends Seeder {
             'security' => 123456,
             'gender' => 1,
             'date_of_birth' => '01-01-2000',
-            'occupation' => 'Administrator',
             'address' => 'Dhanmondi, Dhaka.',
             'status' => 1
         ]);

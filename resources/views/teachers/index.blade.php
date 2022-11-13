@@ -11,10 +11,10 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Batch List</li>
+                            <li class="breadcrumb-item active">Teacher List</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Batches</h4>
+                    <h4 class="page-title">Teachers</h4>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <a href="{{ route('batches.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Batch</a>
+                                <a href="{{ route('teachers.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Teacher</a>
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
@@ -53,15 +53,16 @@
                                             </div>
                                         </th>
                                         <th>SL</th>
-                                        <th>Department</th>
-                                        <th>Batch</th>
-                                        <th>Year</th>
+                                        <th>Teacher</th>
+                                        <th>Phone Number</th>
+                                        <th>Email</th>
+                                        <th>Gender</th>
                                         <th>Status</th>
                                         <th style="width: 75px;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($batches as $batch)
+                                    @foreach ($teachers as $teacher)
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -70,23 +71,31 @@
                                                 </div>
                                             </td>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ $batch->department->name ?? '' }}</td>
-                                            <td>{{ $batch->name ?? '' }}</td>
-                                            <td>{{ $batch->year ?? '' }}</td>
+                                            <td class="table-user">
+                                                @if ($teacher->image)
+                                                    <img src="/images/users/{{ $teacher->image }}" alt="table-user" class="me-2 rounded-circle">
+                                                @else
+                                                    <img src="{{ asset('images/avator.png') }}" alt="table-user" class="me-2 rounded-circle">
+                                                @endif
+                                                <a href="{{ route('teachers.show', $teacher->id) }}" class="text-body fw-semibold">{{ $teacher->name ?? '' }}</a>
+                                            </td>
+                                            <td>{{ $teacher->contact_number ?? '' }}</td>
+                                            <td>{{ $teacher->email ?? '' }}</td>
+                                            <td>{{ ($teacher->gender == 1) ? 'Male' : (($teacher->gender == 2) ? 'Female' : (($teacher->gender == 3) ? 'Others' : '')) }}</td>
                                             <td>
-                                                @if ($batch->status == 0)
-                                                    <span class="badge badge-warning-lighten">Inactive</span>
-                                                @elseif ($batch->status == 1)
+                                                @if ($teacher->status == 1)
                                                     <span class="badge badge-success-lighten">Active</span>
-                                                @elseif ($batch->status == 2)
-                                                    <span class="badge badge-danger-lighten">Closed</span>
+                                                @elseif ($teacher->status == 2)
+                                                    <span class="badge badge-warning-lighten">Inactive</span>
+                                                @elseif ($teacher->status == 3)
+                                                    <span class="badge badge-danger-lighten">Blocked</span>
                                                 @endif
                                             </td>
         
                                             <td>
-                                                <form action="{{ route('batches.destroy', $batch->id) }}" method="POST">
-                                                    <a href="{{ route('batches.show', $batch->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
-                                                    <a href="{{ route('batches.edit', $batch->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST">
+                                                    <a href="{{ route('teachers.show', $teacher->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
+                                                    <a href="{{ route('teachers.edit', $teacher->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
 
                                                     @csrf
                                                     @method('DELETE')
@@ -114,7 +123,7 @@
         <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
 
-        <script src="{{ asset('assets/js/pages/demo.batches.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/demo.teachers.js') }}"></script>
 
         <script>
             $('#notificationAlert').delay(3000).fadeOut('slow');     

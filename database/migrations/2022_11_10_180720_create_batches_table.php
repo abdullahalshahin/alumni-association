@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up() {
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
-            $table->unsignedDecimal('department_id')->index();
+            $table->unsignedBigInteger('department_id')->index();
             $table->string('name');
             $table->year('year');
             $table->unsignedTinyInteger('status')->comment('0 = inactive, 1 = active, 2 = closed');

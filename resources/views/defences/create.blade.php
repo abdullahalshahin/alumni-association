@@ -6,11 +6,11 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Student List</a></li>
-                            <li class="breadcrumb-item active">Student Edit</li>
+                            <li class="breadcrumb-item"><a href="{{ route('defences.index') }}">Defence List</a></li>
+                            <li class="breadcrumb-item active">Defence Create</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Student Edit</h4>
+                    <h4 class="page-title">Defence Create</h4>
                 </div>
             </div>
         </div>
@@ -31,14 +31,13 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <form action="{{ route('students.update', $students->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('defences.store') }}" method="POST">
                                 @csrf
-                                @method('PUT')
         
-                                @include('students.form')
+                                @include('defences.form')
         
                                 <div class="modal-footer">
-                                    <a href="{{ route('students.index') }}" class="btn btn-primary">Go Back</a>
+                                    <a href="{{ route('defences.index') }}" class="btn btn-primary">Go Back</a>
                                     <button type="submit" class="btn btn-success">Save</button>
                                 </div>
                             </form>

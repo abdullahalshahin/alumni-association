@@ -6,7 +6,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Group List</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('groups.index') }}">Group List</a></li>
                             <li class="breadcrumb-item active">Group Create</li>
                         </ol>
                     </div>

@@ -53,10 +53,10 @@
                                             </div>
                                         </th>
                                         <th>SL</th>
-                                        <th>Name</th>
-                                        <th>Department</th>
-                                        <th>Batch</th>
+                                        <th>Group</th>
                                         <th>Session</th>
+                                        <th>Batch</th>
+                                        <th>Department</th>
                                         <th>Teacher</th>
                                         <th>Topic</th>
                                         <th>Status</th>
@@ -74,9 +74,9 @@
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $group->name ?? '' }}</td>
-                                            <td>{{ $group->session->batch->department->name ?? '' }}</td>
-                                            <td>{{ $group->session->batch->name ?? '' }}</td>
                                             <td>{{ $group->session->name ?? '' }}</td>
+                                            <td>{{ $group->session->batch->name ?? '' }}</td>
+                                            <td>{{ $group->session->batch->department->name ?? '' }}</td>
                                             <td>{{ $group->teacher->name ?? '' }}</td>
                                             <td>{{ $group->topic_name ?? '' }}</td>
                                             <td>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
+use App\Models\Department;
 use App\Models\Group;
 use App\Models\Session;
 use App\Models\User;
@@ -23,6 +25,8 @@ class GroupController extends Controller {
     public function data(Group $group) {
         return [
             'groups' => $group,
+            'departments' => Department::where('status', 1)->get(['id', 'name']),
+            'batches' => Batch::where('status', 1)->get(['id', 'name']),
             'sesiones' => Session::where('status', 1)->get(['id', 'name']),
             'teachers' => User::where('user_type', 1)->get(['id', 'name'])
         ];
@@ -61,7 +65,7 @@ class GroupController extends Controller {
         ]);
 
         return redirect()->route('groups.index')
-            ->with('success', 'Department created successfully.');
+            ->with('success', 'Group created successfully.');
     }
 
     /**
@@ -81,7 +85,7 @@ class GroupController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Group $group) {
-        //
+        return view('groups.edit',  $this->data($group));
     }
 
     /**
@@ -92,7 +96,24 @@ class GroupController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Group $group) {
-        //
+        $request->validate([
+            'session_id' => ['required'],
+            'name' => ['required', 'string', 'max:255'],
+            'teacher_id' => ['required'],
+            'topic_name' => ['required', 'string'],
+            'inputState' => ['required']
+        ]);
+
+        $group->update([
+            'session_id' => $request->session_id,
+            'name' => $request->name,
+            'teacher_id' => $request->teacher_id,
+            'topic_name' => $request->topic_name,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('groups.index')
+            ->with('success', 'Group update successfully.');
     }
 
     /**
@@ -102,6 +123,16 @@ class GroupController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Group $group) {
-        //
+        $group->delete();
+
+        return redirect()->route('sessions.index')
+            ->with('success','Group deleted successfully');
+    }
+
+    // API
+    public function fetchGroup(Request $request) {
+        $data['groups'] = Group::where('session_id', $request->session_id)->get(['id', 'name']);
+
+        return response()->json($data);
     }
 }

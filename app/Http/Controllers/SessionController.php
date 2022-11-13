@@ -14,15 +14,16 @@ class SessionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $sesiones = Session::get();
+        $sessions = Session::get();
 
-        return view('sesiones.index', compact('sesiones'))
+        return view('sessions.index', compact('sessions'))
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function data(Session $session) {
         return [
-            'sesiones' => $session,
+            'sessions' => $session,
+            'departments' => Department::where('status', 1)->get(['id', 'name']),
             'batches' => Batch::where('status', 1)->get(['id', 'name'])
         ];
     }
@@ -33,7 +34,7 @@ class SessionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('sesiones.create', $this->data(new Session()));
+        return view('sessions.create', $this->data(new Session()));
     }
 
     /**
@@ -55,8 +56,8 @@ class SessionController extends Controller {
             'status' => $request->inputState
         ]);
 
-        return redirect()->route('sesiones.index')
-            ->with('success', 'Department created successfully.');
+        return redirect()->route('sessions.index')
+            ->with('success', 'Session created successfully.');
     }
 
     /**
@@ -76,7 +77,7 @@ class SessionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Session $session) {
-        //
+        return view('sessions.edit',  $this->data($session));
     }
 
     /**
@@ -87,7 +88,20 @@ class SessionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Session $session) {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'batch_id' => ['required'],
+            'inputState' => ['required']
+        ]);
+
+        $session->update([
+            'name' => $request->name,
+            'batch_id' => $request->batch_id,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('sessions.index')
+            ->with('success', 'Session update successfully.');
     }
 
     /**
@@ -97,6 +111,19 @@ class SessionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Session $session) {
-        //
+        $session->delete();
+
+        return redirect()->route('sessions.index')
+            ->with('success','Session deleted successfully');
+    }
+
+    // API
+    public function fetchSession(Request $request) {
+        $data['sessions'] = Session::where([
+                ['status', 1],
+                ['batch_id', $request->batch_id]
+            ])->get(['id', 'name']);
+
+        return response()->json($data);
     }
 }

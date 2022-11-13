@@ -22,7 +22,7 @@ class BatchController extends Controller {
     public function data(Batch $batch) {
         return [
             'batches' => $batch,
-            'departments' => Department::where('status', 1)->get(['id', 'name']),
+            'departments' => Department::where('status', 1)->get(['id', 'name'])
         ];
     }
 
@@ -57,7 +57,7 @@ class BatchController extends Controller {
         ]);
 
         return redirect()->route('batches.index')
-            ->with('success','Department created successfully.');
+            ->with('success','Batch created successfully.');
     }
 
     /**
@@ -67,7 +67,7 @@ class BatchController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Batch $batch) {
-        //
+        return view('batches.show', $this->data($batch));
     }
 
     /**
@@ -77,7 +77,7 @@ class BatchController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Batch $batch) {
-        //
+        return view('batches.edit',  $this->data($batch));
     }
 
     /**
@@ -88,7 +88,22 @@ class BatchController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Batch $batch) {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'year' => ['required'],
+            'department_id' => ['required'],
+            'inputState' => ['required']
+        ]);
+
+        $batch->update([
+            'name' => $request->name,
+            'year' => $request->year,
+            'department_id' => $request->department_id,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('batches.index')
+            ->with('success','Batch update successfully.');
     }
 
     /**
@@ -98,6 +113,19 @@ class BatchController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Batch $batch) {
-        //
+        $batch->delete();
+
+        return redirect()->route('batches.index')
+            ->with('success','Batch deleted successfully');
+    }
+
+    // API
+    public function fetchBatch(Request $request) {
+        $data['batches'] = Batch::where([
+                ['status', 1],
+                ['department_id', $request->department_id]
+            ])->get(['id', 'name']);
+
+        return response()->json($data);
     }
 }

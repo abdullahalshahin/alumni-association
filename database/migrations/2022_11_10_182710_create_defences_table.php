@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->foreign('student_id')->references('id')->on('users');
             $table->tinyInteger('marks')->nullable();
             $table->text('details')->nullable();
+            $table->unsignedTinyInteger('seen')->default(0)->comment('0 = unseen, 1 = seen');
             $table->unsignedTinyInteger('status')->default(0)->comment('0 = not_verified , 1 = verified');
             $table->unsignedBigInteger('varified_by')->nullable();
             $table->foreign('varified_by')->references('id')->on('users');

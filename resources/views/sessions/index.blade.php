@@ -14,7 +14,7 @@
                             <li class="breadcrumb-item active">Session List</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Sesiones</h4>
+                    <h4 class="page-title">Sessions</h4>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <a href="{{ route('sesiones.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Session</a>
+                                <a href="{{ route('sessions.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Session</a>
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
@@ -53,15 +53,15 @@
                                             </div>
                                         </th>
                                         <th>SL</th>
-                                        <th>Name</th>
-                                        <th>Department</th>
+                                        <th>Session</th>
                                         <th>Batch</th>
+                                        <th>Department</th>
                                         <th>Status</th>
                                         <th style="width: 75px;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($sesiones as $session)
+                                    @foreach ($sessions as $session)
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -71,8 +71,8 @@
                                             </td>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $session->name ?? '' }}</td>
-                                            <td>{{ $session->batch->department->name ?? '' }}</td>
                                             <td>{{ $session->batch->name ?? '' }}</td>
+                                            <td>{{ $session->batch->department->name ?? '' }}</td>
                                             <td>
                                                 @if ($session->status == 0)
                                                     <span class="badge badge-warning-lighten">Inactive</span>
@@ -84,9 +84,9 @@
                                             </td>
         
                                             <td>
-                                                <form action="{{ route('sesiones.destroy', $session->id) }}" method="POST">
-                                                    <a href="{{ route('sesiones.show', $session->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
-                                                    <a href="{{ route('sesiones.edit', $session->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <form action="{{ route('sessions.destroy', $session->id) }}" method="POST">
+                                                    <a href="{{ route('sessions.show', $session->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
+                                                    <a href="{{ route('sessions.edit', $session->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
 
                                                     @csrf
                                                     @method('DELETE')
@@ -114,7 +114,7 @@
         <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
 
-        <script src="{{ asset('assets/js/pages/demo.sesiones.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/demo.sessions.js') }}"></script>
 
         <script>
             $('#notificationAlert').delay(3000).fadeOut('slow');     

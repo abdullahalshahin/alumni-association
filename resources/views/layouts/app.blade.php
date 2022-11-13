@@ -55,6 +55,30 @@
                         <li class="side-nav-title side-nav-item">Apps</li>
 
                         <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#Academy" aria-expanded="false" aria-controls="Academy" class="side-nav-link">
+                                <i class="uil-cell"></i>
+                                <span> Academy </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="Academy">
+                                <ul class="side-nav-second-level">
+                                    <li>
+                                        <a href="{{ route('departments.index') }}">Departments</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('batches.index') }}">Batches</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('sessions.index') }}">Sessions</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('groups.index') }}">Groups</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="side-nav-item">
                             <a href="{{ route('students.index') }}" class="side-nav-link">
                                 <i class="uil-graduation-hat"></i>
                                 <span> Students </span>
@@ -62,14 +86,14 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="{{ url('') }}" class="side-nav-link">
+                            <a href="{{ route('defences.index') }}" class="side-nav-link">
                                 <i class="uil-file-check-alt"></i>
                                 <span> Alumnus </span>
                             </a>
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="{{ url('teachers.index') }}" class="side-nav-link">
+                            <a href="{{ route('teachers.index') }}" class="side-nav-link">
                                 <i class="dripicons-user-id"></i>
                                 <span> Teachers </span>
                             </a>
@@ -89,13 +113,6 @@
                             </a>
                         </li>
 
-                        {{-- <li class="side-nav-item">
-                            <a href="apps-chat.html" class="side-nav-link">
-                                <i class="uil-rss"></i>
-                                <span> Blog Posts </span>
-                            </a>
-                        </li> --}}
-
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#RecycleBin" aria-expanded="false" aria-controls="RecycleBin" class="side-nav-link">
                                 <i class="uil-file-redo-alt"></i>
@@ -113,9 +130,6 @@
                                     <li>
                                         <a href="{{ url('user-restore') }}">Teachers</a>
                                     </li>
-                                    {{-- <li>
-                                        <a href="{{ url('user-restore') }}">Posts</a>
-                                    </li> --}}
                                 </ul>
                             </div>
                         </li>
@@ -132,7 +146,7 @@
                             <div class="collapse" id="UserManagement">
                                 <ul class="side-nav-second-level">
                                     <li>
-                                        <a href="{{ url('users.index') }}"> Users </a>
+                                        <a href="{{ route('users.index') }}"> Users </a>
                                     </li>
                                     <li>
                                         <a href="{{ url('roles.index') }}"> Roles </a>
@@ -142,7 +156,7 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="apps-chat.html" class="side-nav-link">
+                            <a href="{{ url('settings') }}" class="side-nav-link">
                                 <i class="dripicons-gear noti-icon"></i>
                                 <span> Settings </span>
                             </a>
@@ -165,21 +179,6 @@
                                     <form class="p-3">
                                         <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
                                     </form>
-                                </div>
-                            </li>
-                            <li class="dropdown notification-list topbar-dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <img src="{{ asset('assets/images/flags/us.jpg') }}" alt="user-image" class="me-0 me-sm-1" height="12"> 
-                                    <span class="align-middle d-none d-sm-inline-block">English</span> <i class="mdi mdi-chevron-down d-none d-sm-inline-block align-middle"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu">
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                        <img src="{{ asset('assets/images/flags/us.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
-                                    </a>
-
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                        <img src="{{ asset('assets/images/flags/us.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Bangladesh</span>
-                                    </a>
                                 </div>
                             </li>
 
@@ -263,60 +262,8 @@
                                 </div>
                             </li>
 
-                            <li class="dropdown notification-list d-none d-sm-inline-block">
-                                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <i class="dripicons-view-apps noti-icon"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg p-0">
-                                    <div class="p-2">
-                                        <div class="row g-0">
-                                            <div class="col">
-                                                <a class="dropdown-icon-item" href="#">
-                                                    <img src="{{ asset('assets/images/brands/slack.png') }}" alt="slack">
-                                                    <span>Slack</span>
-                                                </a>
-                                            </div>
-                                            <div class="col">
-                                                <a class="dropdown-icon-item" href="#">
-                                                    <img src="{{ asset('assets/images/brands/github.png') }}" alt="Github">
-                                                    <span>GitHub</span>
-                                                </a>
-                                            </div>
-                                            <div class="col">
-                                                <a class="dropdown-icon-item" href="#">
-                                                    <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
-                                                    <span>Dribbble</span>
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-0">
-                                            <div class="col">
-                                                <a class="dropdown-icon-item" href="#">
-                                                    <img src="{{ asset('assets/images/brands/bitbucket.png') }}" alt="bitbucket">
-                                                    <span>Bitbucket</span>
-                                                </a>
-                                            </div>
-                                            <div class="col">
-                                                <a class="dropdown-icon-item" href="#">
-                                                    <img src="{{ asset('assets/images/brands/dropbox.png') }}" alt="dropbox">
-                                                    <span>Dropbox</span>
-                                                </a>
-                                            </div>
-                                            <div class="col">
-                                                <a class="dropdown-icon-item" href="#">
-                                                    <img src="{{ asset('assets/images/brands/g-suite.png') }}" alt="G Suite">
-                                                    <span>G Suite</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
-
                             <li class="notification-list">
-                                <a class="nav-link" href="{{ route('dashboard') }}">
+                                <a class="nav-link" href="{{ url('settings') }}">
                                     <i class="dripicons-gear noti-icon"></i>
                                 </a>
                             </li>
@@ -439,7 +386,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> © Hyper - Coderthemes.com
+                                <script>document.write(new Date().getFullYear())</script> © Falcon - abdullahalshahin.me
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end footer-links d-none d-md-block">

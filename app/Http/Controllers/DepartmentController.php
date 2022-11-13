@@ -77,7 +77,7 @@ class DepartmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Department $department) {
-        //
+        return view('departments.edit',  $this->data($department));
     }
 
     /**
@@ -88,7 +88,24 @@ class DepartmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Department $department) {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'code' => ['required', 'string', 'max:6'],
+            'shift' => ['required'],
+            'total_credit' => ['required'],
+            'inputState' => ['required']
+        ]);
+
+        $department->update([
+            'name' => $request->name,
+            'code' => $request->code,
+            'shift' => $request->shift,
+            'total_credit' => $request->total_credit,
+            'status' => $request->inputState
+        ]);
+
+        return redirect()->route('departments.index')
+            ->with('success','Department update successfully.');
     }
 
     /**
@@ -98,6 +115,9 @@ class DepartmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Department $department) {
-        //
+        $department->delete();
+
+        return redirect()->route('departments.index')
+            ->with('success','Department deleted successfully');
     }
 }

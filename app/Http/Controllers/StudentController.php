@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
+use App\Models\Department;
+use App\Models\Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +28,9 @@ class StudentController extends Controller {
     public function data(User $user) {
         return [
             'students' => $user,
+            'departments' => Department::where('status', 1)->get(['id', 'name']),
+            'batches' => Batch::where('status', 1)->get(['id', 'name']),
+            'sesiones' => Session::where('status', 1)->get(['id', 'name']),
             'roles' => Role::get(['id', 'name'])
         ];
     }
@@ -46,13 +52,15 @@ class StudentController extends Controller {
      */
     public function store(Request $request) {
         $request->validate([
-            'batch_id' => ['required', 'numeric'],
             'name' => ['required', 'string', 'max:255'],
-            'contact_number' => ['required'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', Rules\Password::defaults()],
-            'date_of_birth' => ['required'],
             'gender' => ['required', 'numeric'],
+            'date_of_birth' => ['required'],
+            'contact_number' => ['required', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'min:6'],
+            'department_id' => ['required', 'numeric'],
+            'batch_id' => ['required', 'numeric'],
+            'session_id' => ['required', 'numeric'],
             'earning_credit' => ['required'],
             'address' => ['required', 'string'],
             'inputState' => ['required']
@@ -66,25 +74,25 @@ class StudentController extends Controller {
         }
 
         $user = User::create([
+            'user_type' => 2,
             'name' => $request->name,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'security' => $request->password,
             'date_of_birth' => $request->date_of_birth,
             'gender' => $request->gender,
-            'phone' => $request->phone,
+            'contact_number' => $request->contact_number,
             'email' => $request->email,
-            'position' => $request->position,
+            'password' => Hash::make($request->password),
+            'security' => $request->password,
+            'session_id' => $request->session_id,
+            'earning_credit' => $request->earning_credit,
             'image' => ($request->file('image')) ? $image_name : '',
             'address' => $request->address,
             'status' => $request->inputState
         ]);
 
-        $user->assignRole($request->roles);
+        // $user->assignRole($request->roles);
 
-
-        return redirect()->route('users.index')
-            ->with('success','User created successfully.');
+        return redirect()->route('students.index')
+            ->with('success','Student created successfully.');
     }
 
     /**
@@ -103,8 +111,8 @@ class StudentController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user) {
-        //
+    public function edit(User $student) {
+        return view('students.edit',  $this->data($student));
     }
 
     /**
@@ -114,8 +122,36 @@ class StudentController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user) {
-        //
+    public function update(Request $request, User $student) {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'numeric'],
+            'date_of_birth' => ['required'],
+            'password' => ['required', 'min:6'],
+            'department_id' => ['required', 'numeric'],
+            'batch_id' => ['required', 'numeric'],
+            'session_id' => ['required', 'numeric'],
+            'earning_credit' => ['required'],
+            'address' => ['required', 'string'],
+            'inputState' => ['required']
+        ]);
+
+        $student->update([
+            'name' => $request->name,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'password' => Hash::make($request->password),
+            'security' => $request->password,
+            'session_id' => $request->session_id,
+            'earning_credit' => $request->earning_credit,
+            'address' => $request->address,
+            'status' => $request->inputState
+        ]);
+
+        // $user->assignRole($request->roles);
+
+        return redirect()->route('students.index')
+            ->with('success','Student update successfully.');
     }
 
     /**
@@ -124,7 +160,10 @@ class StudentController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user) {
-        //
+    public function destroy(User $student) {
+        $student->delete();
+
+        return redirect()->route('students.index')
+            ->with('success','Student deleted successfully');
     }
 }

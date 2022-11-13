@@ -18,8 +18,7 @@ class User extends Authenticatable {
      * @var array<int, string>
      */
     protected $fillable = [
-        'registration_number', 'name', 'date_of_birth', 'gender', 'contact_number',
-        'email', 'password', 'security', 'occupation', 'position', 'guardian_name', 'guardian_contact_number',
+        'session_id', 'name','date_of_birth', 'gender', 'contact_number', 'email', 'password', 'security', 'earning_credit',
         'address', 'image', 'user_type', 'status'
     ];
 
@@ -41,4 +40,12 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function session() {
+        return $this->belongsTo(Session::class);
+    }
+
+    public function group() {
+        return $this->belongsTo(Group::class);
+    }
 }

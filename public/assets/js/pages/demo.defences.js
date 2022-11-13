@@ -6,8 +6,8 @@ $(document).ready(function() {
 				previous: "<i class='mdi mdi-chevron-left'>",
 				next: "<i class='mdi mdi-chevron-right'>"
 			},
-			info: "Showing students _START_ to _END_ of _TOTAL_",
-			lengthMenu: 'Display <select class=\'form-select form-select-sm ms-1 me-1\'><option value="10">10</option><option value="20">20</option><option value="-1">All</option></select> students'
+			info: "Showing defences _START_ to _END_ of _TOTAL_",
+			lengthMenu: 'Display <select class=\'form-select form-select-sm ms-1 me-1\'><option value="10">10</option><option value="20">20</option><option value="-1">All</option></select> defences'
 		},
 		pageLength: 10,
 		columns: [{
@@ -32,6 +32,8 @@ $(document).ready(function() {
 		}, {
 			orderable: !0
 		}, {
+            orderable: !0
+		}, {
 			orderable: !0
 		}, {
 			orderable: !0
@@ -42,7 +44,7 @@ $(document).ready(function() {
 			style: "multi"
 		},
 		order: [
-			[5, "asc"]
+			[2, "asc"]
 		],
 		drawCallback: function() {
 			$(".dataTables_paginate > .pagination").addClass("pagination-rounded"), $("#products-datatable_length label").addClass("form-label")

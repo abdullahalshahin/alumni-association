@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="script">
+    <x-slot name="style">
         <link href="{{ asset('assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
     </x-slot>
@@ -56,8 +56,8 @@
                                         <th>Student</th>
                                         <th>Phone Number</th>
                                         <th>Email</th>
-                                        <th>Date of Birth</th>
                                         <th>Gender</th>
+                                        <th>Department</th>
                                         <th>Earning Credit</th>
                                         <th>Status</th>
                                         <th style="width: 75px;">Action</th>
@@ -77,14 +77,14 @@
                                                 @if ($student->image)
                                                     <img src="/images/users/{{ $student->image }}" alt="table-user" class="me-2 rounded-circle">
                                                 @else
-                                                    <img src="{{ asset('images/default/avator.png') }}" alt="table-user" class="me-2 rounded-circle">
+                                                    <img src="{{ asset('images/avator.png') }}" alt="table-user" class="me-2 rounded-circle">
                                                 @endif
-                                                <a href="javascript:void(0);" class="text-body fw-semibold">{{ $student->name ?? '' }}</a>
+                                                <a href="{{ route('students.show', $student->id) }}" class="text-body fw-semibold">{{ $student->name ?? '' }}</a>
                                             </td>
-                                            <td>{{ $student->phone ?? '' }}</td>
+                                            <td>{{ $student->contact_number ?? '' }}</td>
                                             <td>{{ $student->email ?? '' }}</td>
-                                            <td>{{ $student->date_of_birth ?? '' }}</td>
                                             <td>{{ ($student->gender == 1) ? 'Male' : (($student->gender == 2) ? 'Female' : (($student->gender == 3) ? 'Others' : '')) }}</td>
+                                            <td>{{ $student->session->batch->department->name ?? '' }}</td>
                                             <td>{{ $student->earning_credit ?? '' }}</td>
                                             <td>
                                                 @if ($student->status == 1)

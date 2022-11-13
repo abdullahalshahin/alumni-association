@@ -14,7 +14,6 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('user_type')->default(2)->comment('0 = admin, 1 = teacher, 2 = student');
-            $table->string('registration_number', 6)->unique()->nullable();
             $table->unsignedBigInteger('session_id')->nullable();
             $table->string('name');
             $table->string('contact_number', 15)->unique();
@@ -25,9 +24,6 @@ return new class extends Migration {
             $table->unsignedTinyInteger('gender')->comment('1 = male, 2 = female, 3 = others');
             $table->string('date_of_birth', 10)->nullable();
             $table->double('earning_credit', 8, 2)->nullable();
-            $table->string('occupation')->nullable();
-            $table->string('guardian_name')->nullable();
-            $table->string('guardian_contact_number', 15)->nullable();
             $table->text('address')->nullable();
             $table->string('biography', 120)->nullable();
             $table->string('image')->nullable();
