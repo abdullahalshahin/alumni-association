@@ -150,7 +150,7 @@ class DefenceController extends Controller {
         $student_earning_credit = $student->earning_credit;
 
         if ($student_earning_credit < $department_credit) {
-            return back()->with('error', 'You have not completed all you academic Credits!');
+            return back()->with('error', 'You have not completed all your academic Credits!');
         }
 
         if ($request->inputState == 1) {
@@ -206,6 +206,22 @@ class DefenceController extends Controller {
     }
 
     public function studentAlumniRequest(Request $request) {
-        return $request;
+        $request->validate([
+            'registration_no' => ['required'],
+            'group_id' => ['required'],
+            'date' => ['required'],
+            'details' => ['required']
+        ]);
+
+        $student = User::where('registration_no', $request->registration_no)->first();
+
+        Defence::create([
+            'date' => $request->date,
+            'group_id' => $request->group_id,
+            'student_id' => $student->id,
+            'details' => $request->details
+        ]);
+
+        return back()->with('success', 'Request Send successfully.');
     }
 }

@@ -27,3 +27,4 @@ Route::post('fetch-groups', [GroupController::class, 'fetchGroup']);
 Route::post('fetch-student-participant', [StudentController::class, 'fetchStudentParticipant']);
 
 Route::get('fetch-student-data', [StudentController::class, 'fetchStudentData']);
+Route::get('fetch-group-data', [GroupController::class, 'fetchGroupData']);

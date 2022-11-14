@@ -147,4 +147,12 @@ class GroupController extends Controller {
 
         return response()->json($data);
     }
+
+    public function fetchGroupData(Request $request) {
+        $group = Group::with('teacher')->find($request->group_id);
+
+        return response()->json([
+            'group' => $group
+        ]);
+    }
 }

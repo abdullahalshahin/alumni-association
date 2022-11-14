@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up() {
         Schema::create('defences', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->string('date');
             $table->unsignedBigInteger('group_id')->index();
             $table->foreign('group_id')->references('id')->on('groups');
             $table->unsignedBigInteger('student_id')->index();

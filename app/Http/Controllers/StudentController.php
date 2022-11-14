@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\Defence;
 use App\Models\Department;
 use App\Models\Group;
 use App\Models\Session;
@@ -191,11 +192,39 @@ class StudentController extends Controller {
     }
 
     public function fetchStudentData(Request $request) {
-        // $data['student'] = User::where('registration_no',$request->registration_no)->first();
+        $student = User::where('registration_no',$request->registration_no)->first();
+        
+        if ($student) {
+            $alumni_student = Defence::where('student_id', $student->id)->count();
 
-        $data['student'] = User::with('session.batch.department')->where('registration_no',$request->registration_no)->first();
-        $data['groups'] = Group::where('session_id', $data['student']->session->id)->get(['id', 'name']);
+            if ($alumni_student) {
+                return response()->json([
+                    'registered' => "registered",
+                    'message' => "You are already Registered!"
+                ]);
+            }
 
-        return response()->json($data);
+            $data['student'] = User::with('session.batch.department')->where('registration_no',$request->registration_no)->first();
+            $data['groups'] = Group::where('session_id', $data['student']->session->id)->get(['id', 'name']);
+
+            $department_credit = $student->session->batch->department->total_credit;
+            $student_earning_credit = $student->earning_credit;
+
+            if ($department_credit > $student_earning_credit) {
+                return response()->json([
+                    'status' => "not_approvable",
+                    'message' => "You have not completed all your academic Credits!",
+                    'student' => $data['student'],
+                    'groups' => $data['groups']
+                ]);
+            }
+            
+            return response()->json($data);
+        } else {
+            return response()->json([
+                'status' => "not_found",
+                'message' => "Your Data is Not Found!"
+            ]);
+        }
     }
 }

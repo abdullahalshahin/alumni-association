@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedTinyInteger('user_type')->default(2)->comment('0 = admin, 1 = teacher, 2 = student');
             $table->unsignedBigInteger('session_id')->nullable();
-            $table->unsignedInteger('registration_no', 10)->unique()->nullable();
+            $table->unsignedInteger('registration_no')->unique()->nullable();
             $table->string('name');
             $table->string('contact_number', 15)->unique();
             $table->string('email')->unique();
