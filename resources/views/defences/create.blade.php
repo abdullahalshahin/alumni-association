@@ -26,6 +26,10 @@
             </div>
         @endif
 
+        @if(Session::has('error'))
+            <p class="alert alert-danger">{{ Session::get('error') }}</p>
+        @endif
+        
         <div class="row">
             <div class="col-12">
                 <div class="card">

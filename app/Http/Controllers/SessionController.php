@@ -13,6 +13,18 @@ class SessionController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->middleware('permission:session_view|session_create|session_edit|session_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:session_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:session_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:session_delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index() {
         $sessions = Session::get();
 

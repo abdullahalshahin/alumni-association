@@ -1,4 +1,9 @@
 <x-app-layout>
+    <x-slot name="style">
+        <link href="{{ asset('assets/css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+    </x-slot>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -50,11 +55,9 @@
                                         <th>SL</th>
                                         <th>Name</th>
                                         <th>Phone Number</th>
-                                        <th>username</th>
                                         <th>Email</th>
                                         <th>Date of Birth</th>
                                         <th>Gender</th>
-                                        <th>Position</th>
                                         <th>Permissions</th>
                                         <th>Status</th>
                                         <th style="width: 75px;">Action</th>
@@ -74,16 +77,14 @@
                                                 @if ($user->image)
                                                     <img src="/images/users/{{ $user->image }}" alt="table-user" class="me-2 rounded-circle">
                                                 @else
-                                                    <img src="{{ asset('images/default/avator.png') }}" alt="table-user" class="me-2 rounded-circle">
+                                                    <img src="{{ asset('images/avator.png') }}" alt="table-user" class="me-2 rounded-circle">
                                                 @endif
                                                 <a href="javascript:void(0);" class="text-body fw-semibold">{{ $user->name ?? '' }}</a>
                                             </td>
-                                            <td>{{ $user->phone ?? '' }}</td>
-                                            <td>{{ $user->username ?? '' }}</td>
+                                            <td>{{ $user->contact_number ?? '' }}</td>
                                             <td>{{ $user->email ?? '' }}</td>
                                             <td>{{ $user->date_of_birth ?? '' }}</td>
                                             <td> {{ ($user->gender == 1) ? 'Male' : (($user->gender == 2) ? 'Female' : (($user->gender == 3) ? 'Others' : '')) }} </td>
-                                            <td>{{ $user->position ?? '' }}</td>
                                             <td>
                                                 @forelse ($user->roles as $role)
                                                     {{ $role->name }}
@@ -126,6 +127,12 @@
     
     <!-- script -->
     <x-slot name="script">
+        <script src="{{ asset('assets/js/vendor/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.bootstrap5.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
+        <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
+
         <script src="{{ asset('assets/js/pages/demo.users.js') }}"></script>
 
         <script>
@@ -135,25 +142,25 @@
             });
 
 
-            // $('.show_confirm').click(function(event) {
-            //     var form =  $(this).closest("form");
-            //     var name = $(this).data("name");
-            //     event.preventDefault();
-            //     Swal.fire({
-            //         title: 'Are you sure?',
-            //         text: "You want to delete this item ?",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonText: 'Yes, delete it!',
-            //         cancelButtonText: 'No, cancel!',
-            //         reverseButtons: true
-            //     })
-            //     .then((willDelete) => {
-            //         if (willDelete.isConfirmed) {
-            //             form.submit();
-            //         }
-            //     });
-            // });
+            $('.show_confirm').click(function(event) {
+                var form =  $(this).closest("form");
+                var name = $(this).data("name");
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this item ?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                })
+                .then((willDelete) => {
+                    if (willDelete.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         </script>
     </x-slot>
 </x-app-layout>

@@ -17,11 +17,25 @@
 
 <div class="row g-2">
     <div class="mb-3 col-md-6">
-        <label for="username" class="form-label">username</label>
-        <div class="input-group flex-nowrap">
-            <span class="input-group-text">@</span>
-            <input type="text" name="username" value="{{ old('username', $users->username ?? '') }}" id="username" class="form-control" placeholder="username" aria-label="username" aria-describedby="username" required>
-        </div>
+        <label for="gender" class="form-label">Gender</label>
+        <select id="gender" name="gender" class="form-select" required>
+            <option selected>Choose</option>
+            <option value="1" {{ old('gender') ?? ( 1 == ($users->gender ?? '')) ? 'selected' : '' }}>Male</option>
+            <option value="2" {{ old('gender') ?? ( 2 == ($users->gender ?? '')) ? 'selected' : '' }}>Female</option>
+            <option value="3" {{ old('gender') ?? ( 3 == ($users->gender ?? '')) ? 'selected' : '' }}>Others</option>
+        </select>
+    </div>
+
+    <div class="mb-3 col-md-6">
+        <label for="contact_number" class="form-label">Contact Number</label>
+        <input type="text" name="contact_number" value="{{ old('contact_number', $users->contact_number ?? '') }}" class="form-control" id="contact_number" placeholder="+8801XXXXXXXXX" required>
+    </div>
+</div>
+
+<div class="row g-2">
+    <div class="mb-3 col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" value="{{ old('email', $users->email ?? '') }}" class="form-control" id="email" placeholder="example@email.com" required>
     </div>
 
     <div class="mb-3 col-md-6">
@@ -37,38 +51,9 @@
 
 <div class="row g-2">
     <div class="mb-3 col-md-6">
-        <label for="phone" class="form-label">Contact Number</label>
-        <input type="text" name="phone" value="{{ old('phone', $users->phone ?? '') }}" class="form-control" id="phone" placeholder="+8801XXXXXXXXX" required>
-    </div>
-
-    <div class="mb-3 col-md-6">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" value="{{ old('email', $users->email ?? '') }}" class="form-control" id="email" placeholder="example@email.com" required>
-    </div>
-</div>
-
-<div class="row g-2">
-    <div class="mb-3 col-md-6">
-        <label for="gender" class="form-label">Gender</label>
-        <select id="gender" name="gender" class="form-select" required>
-            <option selected>Choose</option>
-            <option value="1" {{ old('gender') ?? ( 1 == ($users->gender ?? '')) ? 'selected' : '' }}>Male</option>
-            <option value="2" {{ old('gender') ?? ( 2 == ($users->gender ?? '')) ? 'selected' : '' }}>Female</option>
-            <option value="3" {{ old('gender') ?? ( 3 == ($users->gender ?? '')) ? 'selected' : '' }}>Others</option>
-        </select>
-    </div>
-
-    <div class="mb-3 col-md-6">
-        <label for="position" class="form-label">Position</label>
-        <input type="text" name="position" value="{{ old('position', $users->position ?? '') }}" class="form-control" id="position">
-    </div>
-</div>
-
-<div class="row g-2">
-    <div class="mb-3 col-md-6">
         <label for="roles" class="form-label">Permission</label>
-        <select id="roles" name="roles" class="form-select" required>
-            <option selected>Choose</option>
+        <select id="roles" name="roles" class="form-select">
+            <option value="" selected>Choose</option>
             @foreach ($roles as $role)
                 <option value="{{ $role->id }}">{{ $role->name ?? '' }}</option>
             @endforeach

@@ -10,13 +10,26 @@ use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct() {
+        $this->middleware('permission:user_view|user_create|user_edit|user_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:user_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user_delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $users = User::with('roles')->get();
+        $users = User::where('user_type', 0)->with('roles')->get();
         
         return view('users.index', compact('users'))
             ->with('i', (request()->input('page', 1) - 1) * 10);
@@ -47,13 +60,11 @@ class UserController extends Controller {
     public function store(Request $request) {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', Rules\Password::defaults()],
             'date_of_birth' => ['required'],
             'gender' => ['required', 'numeric'],
-            'phone' => ['required'],
-            'position' => ['required', 'string', 'max:100'],
+            'contact_number' => ['required', 'unique:users'],
             'address' => ['required', 'string'],
             'inputState' => ['required']
         ]);
@@ -66,22 +77,22 @@ class UserController extends Controller {
         }
 
         $user = User::create([
+            'user_type' => 0,
             'name' => $request->name,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'security' => $request->password,
             'date_of_birth' => $request->date_of_birth,
             'gender' => $request->gender,
-            'phone' => $request->phone,
+            'contact_number' => $request->contact_number,
             'email' => $request->email,
-            'position' => $request->position,
+            'password' => Hash::make($request->password),
+            'security' => $request->password,
             'image' => ($request->file('image')) ? $image_name : '',
             'address' => $request->address,
             'status' => $request->inputState
         ]);
 
-        $user->assignRole($request->roles);
-
+        if ($request->roles) {
+            $user->syncPermissions($request->roles);
+        }
 
         return redirect()->route('users.index')
             ->with('success','User created successfully.');
@@ -117,12 +128,9 @@ class UserController extends Controller {
     public function update(Request $request, User $user) {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')->ignore($user->id)],
             'password' => ['required', Rules\Password::defaults()],
             'date_of_birth' => ['required'],
             'gender' => ['required', 'numeric'],
-            'phone' => ['required', Rule::unique(User::class, 'phone')->ignore($user->id)],
-            'position' => ['required', 'string', 'max:100'],
             'address' => ['required', 'string'],
             'inputState' => ['required']
         ]);
@@ -135,20 +143,20 @@ class UserController extends Controller {
         }
 
         $user->update([
+            'user_type' => 0,
             'name' => $request->name,
-            'password' => Hash::make($request->password),
-            'security' => $request->password,
             'date_of_birth' => $request->date_of_birth,
             'gender' => $request->gender,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'position' => $request->position,
+            'password' => Hash::make($request->password),
+            'security' => $request->password,
             'image' => ($request->file('image')) ? $image_name : '',
             'address' => $request->address,
             'status' => $request->inputState
         ]);
 
-        $user->syncPermissions($request->roles);
+        if ($request->roles) {
+            $user->syncPermissions($request->roles);
+        }
 
         return redirect()->route('users.index')
             ->with('success','User Update successfully.');

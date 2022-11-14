@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <form action="{{ route('groups.update', $groups->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation">
+                            <form action="{{ route('groups.update', $groups->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
         

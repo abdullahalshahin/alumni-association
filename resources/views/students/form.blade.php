@@ -1,10 +1,15 @@
 <div class="row g-2">
+    <div class="mb-3 col-md-3">
+        <label for="registration_no">Student ID</label>
+        <input type="text" name="registration_no" value="{{ old('registration_no', $students->registration_no ?? '') }}" class="form-control" id="registration_no" required>
+    </div>
+
     <div class="mb-3 col-md-6">
         <label for="name">Name</label>
         <input type="text" name="name" value="{{ old('name', $students->name ?? '') }}" class="form-control" id="name" placeholder="Write your name" required>
     </div>
 
-    <div class="mb-3 col-md-4">
+    <div class="mb-3 col-md-3">
         <label for="date_of_birth">Date of Birth</label>
         <div class="input-group">
             <input type="text" name="date_of_birth" value="{{ old('date_of_birth', $students->date_of_birth ?? '') }}" class="form-control date" id="date_of_birth" data-toggle="date-picker" data-single-date-picker="true" required>
@@ -95,16 +100,6 @@
 </div>
 
 <div class="row g-2">
-    <div class="mb-3 col-md-6">
-        <label for="roles">Permission</label>
-        <select id="roles" name="roles" class="form-select" required>
-            <option selected>Choose</option>
-            @foreach ($roles as $role)
-                <option value="{{ $role->id }}">{{ $role->name ?? '' }}</option>
-            @endforeach
-        </select>
-    </div>
-
     <div class="mb-3 col-md-6">
         <label for="inputState">Status</label>
         <select id="inputState" name="inputState" class="form-select" required>

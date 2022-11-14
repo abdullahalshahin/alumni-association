@@ -12,6 +12,18 @@ class BatchController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->middleware('permission:batch_view|batch_create|batch_edit|batch_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:batch_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:batch_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:batch_delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index() {
         $batches = Batch::get();
 

@@ -4,15 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\Department;
+use App\Models\Group;
 use App\Models\Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use PHPUnit\TextUI\XmlConfiguration\Groups;
 use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct() {
+        $this->middleware('permission:student_view|student_create|student_edit|student_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:student_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:student_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:student_delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -52,6 +66,7 @@ class StudentController extends Controller {
      */
     public function store(Request $request) {
         $request->validate([
+            'registration_no' => ['required', 'numeric', 'unique:users'],
             'name' => ['required', 'string', 'max:255'],
             'gender' => ['required', 'numeric'],
             'date_of_birth' => ['required'],
@@ -75,6 +90,7 @@ class StudentController extends Controller {
 
         $user = User::create([
             'user_type' => 2,
+            'registration_no' => $request->registration_no,
             'name' => $request->name,
             'date_of_birth' => $request->date_of_birth,
             'gender' => $request->gender,
@@ -165,5 +181,21 @@ class StudentController extends Controller {
 
         return redirect()->route('students.index')
             ->with('success','Student deleted successfully');
+    }
+
+    public function fetchStudentParticipant(Request $request) {
+        $data['student'] = User::with('session.batch.department')->find($request->student_id);
+        $data['groups'] = Group::where('session_id', $data['student']->session->id)->get(['id', 'name']);
+
+        return response()->json($data);
+    }
+
+    public function fetchStudentData(Request $request) {
+        // $data['student'] = User::where('registration_no',$request->registration_no)->first();
+
+        $data['student'] = User::with('session.batch.department')->where('registration_no',$request->registration_no)->first();
+        $data['groups'] = Group::where('session_id', $data['student']->session->id)->get(['id', 'name']);
+
+        return response()->json($data);
     }
 }

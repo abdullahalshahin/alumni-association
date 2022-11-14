@@ -11,6 +11,18 @@ class DepartmentController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->middleware('permission:department_view|department_create|department_edit|department_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:department_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:department_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:department_delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index() {
         $departments = Department::get();
 

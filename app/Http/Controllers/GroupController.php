@@ -15,6 +15,18 @@ class GroupController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->middleware('permission:group_view|group_create|group_edit|group_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:group_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:group_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:group_delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index() {
         $groups = Group::get();
 

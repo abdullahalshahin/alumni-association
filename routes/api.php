@@ -23,3 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('fetch-batches', [BatchController::class, 'fetchBatch']);
 Route::post('fetch-sessions', [SessionController::class, 'fetchSession']);
 Route::post('fetch-groups', [GroupController::class, 'fetchGroup']);
+
+Route::post('fetch-student-participant', [StudentController::class, 'fetchStudentParticipant']);
+
+Route::get('fetch-student-data', [StudentController::class, 'fetchStudentData']);

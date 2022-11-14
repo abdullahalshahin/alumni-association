@@ -6,11 +6,11 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Student List</a></li>
-                            <li class="breadcrumb-item active">Student Edit</li>
+                            <li class="breadcrumb-item"><a href="{{ route('teachers.index') }}">Teacher List</a></li>
+                            <li class="breadcrumb-item active">Teacher Edit</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Student Edit</h4>
+                    <h4 class="page-title">Teacher Edit</h4>
                 </div>
             </div>
         </div>
@@ -31,14 +31,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <form action="{{ route('students.update', $students->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('teachers.update', $teachers->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
         
-                                @include('students.form')
+                                @include('teachers.form')
         
                                 <div class="modal-footer">
-                                    <a href="{{ route('students.index') }}" class="btn btn-primary">Go Back</a>
+                                    <a href="{{ route('teachers.index') }}" class="btn btn-primary">Go Back</a>
                                     <button type="submit" class="btn btn-success">Save</button>
                                 </div>
                             </form>

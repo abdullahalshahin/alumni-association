@@ -1,5 +1,5 @@
 <div class="row g-2">
-    <div class="mb-3 col-md-6">
+    <div class="mb-3 col-md-5">
         <label for="student_id">Student</label>
         <select id="student_id" name="student_id" class="form-select" required>
             <option value=""> -- Select Student --</option>
@@ -11,7 +11,12 @@
         </select>
     </div>
 
-    <div class="mb-3 col-md-6">
+    <div class="mb-3 col-md-3">
+        <label for="student_credit">Student Credit</label>
+        <input type="text" name="student_credit" value="{{ old('date', $defences->student->earning_credit ?? '') }}" class="form-control" id="student_credit" readonly>
+    </div>
+
+    <div class="mb-3 col-md-4">
         <label for="date">Date</label>
         <div class="input-group">
             <input type="text" name="date" value="{{ old('date', $defences->date ?? '') }}" class="form-control date" id="date" data-toggle="date-picker" data-single-date-picker="true" required>
@@ -23,48 +28,32 @@
 </div>
 
 <div class="row g-2">
-    <div class="mb-3 col-md-6">
-        <label for="department_id">Department</label>
-        <select id="department_id" name="department_id" class="form-select" required>
-            <option value=""> -- Select Department --</option>
-            @foreach ($departments as $department)
-                <option value="{{ $department->id }}" {{ (old('department_id') ?? ($defences->groups->session->batch->department_id ?? '' )) == $department->id ? 'selected' : '' }}>
-                    {{ $department->name }}
-                </option>
-            @endforeach
-        </select>
+    <div class="mb-3 col-md-4">
+        <label for="department">Department</label>
+        <input type="text" name="department" value="{{ old('date', $defences->group->session->batch->department->name ?? '') }}" class="form-control" id="department" readonly>
     </div>
 
-    <div class="mb-3 col-md-6">
-        <label for="batch_id">Batch</label>
-        <select id="batch_id" name="batch_id" class="form-select" required>
-            <option value=""> -- Select Batch --</option>
-            @foreach ($batches as $batch)
-                <option value="{{ $batch->id }}" {{ (old('batch_id') ?? ($defences->groups->session->batch_id ?? '' )) == $batch->id ? 'selected' : '' }}>
-                    {{ $batch->name }}
-                </option>
-            @endforeach
-        </select>
+    <div class="mb-3 col-md-4">
+        <label for="department_credit">Department Credit</label>
+        <input type="text" name="department_credit" value="{{ old('date', $defences->group->session->batch->department->total_credit ?? '') }}" class="form-control" id="department_credit" readonly>
+    </div>
+
+    <div class="mb-3 col-md-4">
+        <label for="batch">Batch</label>
+        <input type="text" name="batch" value="{{ old('date', $defences->group->session->batch->name ?? '') }}" class="form-control" id="batch" readonly>
     </div>
 </div>
 
 <div class="row g-2">
     <div class="mb-3 col-md-6">
-        <label for="session_id">Session</label>
-        <select id="session_id" name="session_id" class="form-select" required>
-            <option value=""> -- Select Session --</option>
-            @foreach ($sesiones as $session)
-                <option value="{{ $session->id }}" {{ (old('session_id') ?? ($defences->groups->session_id ?? '')) == $session->id ? 'selected' : '' }}>
-                    {{ $session->name }}
-                </option>
-            @endforeach
-        </select>
+        <label for="session">Session</label>
+        <input type="text" name="session" value="{{ old('date', $defences->group->session->name ?? '') }}" class="form-control" id="session" readonly>
     </div>
 
     <div class="mb-3 col-md-6">
         <label for="group_id">Group</label>
         <select id="group_id" name="group_id" class="form-select" required>
-            <option value=""> -- Select Group --</option>
+            <option value=""> -- Select Batch --</option>
             @foreach ($groups as $group)
                 <option value="{{ $group->id }}" {{ (old('group_id') ?? ($defences->group_id ?? '')) == $group->id ? 'selected' : '' }}>
                     {{ $group->name }}
@@ -83,7 +72,7 @@
 
 <div class="mb-2">
     <label for="details">Details</label>
-    <textarea name="details" class="form-control" id="details" value="{{ old('details', $defences->details ?? '') }}" rows="3">{{ $appointments->payment_amount ?? '' }}</textarea>
+    <textarea name="details" class="form-control" id="details" value="{{ old('details', $defences->details ?? '') }}" rows="6">{{ $defences->details ?? '' }}</textarea>
 </div>
 
 <div class="row g-2">
@@ -99,70 +88,26 @@
 <x-slot name="script">
     <script>
         $(document).ready(function () {
-            $('#department_id').on('change', function () {
-                var department_id = this.value;
-                
-                $("#batch_id").html('');
+            $('#student_id').on('change', function () {
+                var student_id = this.value;
 
                 $.ajax({
-                    url: "{{url('api/fetch-batches')}}",
+                    url: "{{url('api/fetch-student-participant')}}",
                     type: "POST",
                     data: {
-                        department_id: department_id,
+                        student_id: student_id,
                         _token: '{{csrf_token()}}'
                     },
                     dataType: 'json',
                     success: function (result) {
-                        $('#batch_id').html('<option value="">-- Select Batch --</option>');
-                        $.each(result.batches, function (key, value) {
-                            $("#batch_id").append('<option value="' + value.id + '">' + value.name + '</option>');
-                        });
-                        
-                        $('#session_id').html('<option value="">-- Select Session --</option>');
-                    }
-                });
-            });
+                        document.getElementById("student_credit").value = result.student.earning_credit ?? '';
+                        document.getElementById("department").value = result.student.session.batch.department.name ?? '';
+                        document.getElementById("department_credit").value = result.student.session.batch.department.total_credit ?? '';
+                        document.getElementById("batch").value = result.student.session.batch.name ?? '';
+                        document.getElementById("session").value = result.student.session.name ?? '';
 
-            $('#batch_id').on('change', function () {
-                var batch_id = this.value;
-
-                $("#session_id").html('');
-
-                $.ajax({
-                    url: "{{url('api/fetch-sessions')}}",
-                    type: "POST",
-                    data: {
-                        batch_id: batch_id,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        $('#session_id').html('<option value="">-- Select Session --</option>');
-                        $.each(res.sessions, function (key, value) {
-                            $("#session_id").append('<option value="' + value.id + '">' + value.name + '</option>');
-                        });
-
-                        $('#group_id').html('<option value="">-- Select Session --</option>');
-                    }
-                });
-            });
-
-            $('#session_id').on('change', function () {
-                var session_id = this.value;
-
-                $("#group_id").html('');
-
-                $.ajax({
-                    url: "{{url('api/fetch-groups')}}",
-                    type: "POST",
-                    data: {
-                        session_id: session_id,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        $('#group_id').html('<option value="">-- Select Session --</option>');
-                        $.each(res.groups, function (key, value) {
+                        $('#group_id').html('<option value="">-- Select Group --</option>');
+                        $.each(result.groups, function (key, value) {
                             $("#group_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                         });
                     }

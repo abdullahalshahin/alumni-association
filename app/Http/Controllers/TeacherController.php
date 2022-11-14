@@ -13,6 +13,18 @@ class TeacherController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->middleware('permission:teacher_view|teacher_create|teacher_edit|teacher_delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:teacher_create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:teacher_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:teacher_delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index() {
         $teachers = User::where('user_type', 1)->get();
 
@@ -61,7 +73,7 @@ class TeacherController extends Controller {
             $image_name = "$profileImage";
         }
 
-        $user = User::create([
+        $teacher = User::create([
             'user_type' => 1,
             'name' => $request->name,
             'date_of_birth' => $request->date_of_birth,
@@ -75,7 +87,7 @@ class TeacherController extends Controller {
             'status' => $request->inputState
         ]);
 
-        $user->assignRole($request->roles);
+        $teacher->assignRole($request->roles);
 
         return redirect()->route('teachers.index')
             ->with('success','Teacher created successfully.');
@@ -98,7 +110,7 @@ class TeacherController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(User $teacher) {
-        //
+        return view('teachers.edit',  $this->data($teacher));
     }
 
     /**
@@ -109,7 +121,30 @@ class TeacherController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $teacher) {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'numeric'],
+            'date_of_birth' => ['required'],
+            'password' => ['required', 'min:6'],
+            'address' => ['required', 'string'],
+            'inputState' => ['required']
+        ]);
+
+        $teacher->update([
+            'user_type' => 1,
+            'name' => $request->name,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'password' => Hash::make($request->password),
+            'security' => $request->password,
+            'address' => $request->address,
+            'status' => $request->inputState
+        ]);
+
+        $teacher->assignRole($request->roles);
+
+        return redirect()->route('teachers.index')
+            ->with('success','Teacher update successfully.');
     }
 
     /**
@@ -119,6 +154,9 @@ class TeacherController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $teacher) {
-        //
+        $teacher->delete();
+
+        return redirect()->route('students.index')
+            ->with('success','Teacher deleted successfully');
     }
 }

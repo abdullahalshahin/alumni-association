@@ -34,133 +34,151 @@
                 <div class="h-100" id="leftside-menu-container" data-simplebar>
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
-                                <i class="uil-home-alt"></i>
-                                <span class="badge bg-success float-end">4</span>
-                                <span> Dashboards </span>
-                            </a>
-                            <div class="collapse" id="sidebarDashboards">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ route('dashboard') }}">Analytics</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('') }}">Alumni Request <span class="badge rounded-pill bg-light text-dark font-10 float-end">New</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        @canany('dashboard_view', 'defence_request')
+                            <li class="side-nav-item">
+                                <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
+                                    <i class="uil-home-alt"></i>
+                                    <span class="badge bg-success float-end">2</span>
+                                    <span> Dashboards </span>
+                                </a>
+                                <div class="collapse" id="sidebarDashboards">
+                                    <ul class="side-nav-second-level">
+                                        @can('dashboard_view')
+                                            <li>
+                                                <a href="{{ route('dashboard') }}">Analytics</a>
+                                            </li>
+                                        @endcan
+                                        
+                                        @can('defence_request')
+                                            <li>
+                                                <a href="{{ url('defence-request') }}">Alumni Request</a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
 
                         <li class="side-nav-title side-nav-item">Apps</li>
 
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#Academy" aria-expanded="false" aria-controls="Academy" class="side-nav-link">
-                                <i class="uil-cell"></i>
-                                <span> Academy </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="Academy">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ route('departments.index') }}">Departments</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('batches.index') }}">Batches</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('sessions.index') }}">Sessions</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('groups.index') }}">Groups</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        @canany(['dashboard_view', 'batch_view', 'session_view', 'group_view'])
+                            <li class="side-nav-item">
+                                <a data-bs-toggle="collapse" href="#Academy" aria-expanded="false" aria-controls="Academy" class="side-nav-link">
+                                    <i class="uil-cell"></i>
+                                    <span> Academy </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" id="Academy">
+                                    <ul class="side-nav-second-level">
+                                        @can('dashboard_view')
+                                            <li>
+                                                <a href="{{ route('departments.index') }}">Departments</a>
+                                            </li>
+                                        @endcan
+                                        
+                                        @can('batch_view')
+                                            <li>
+                                                <a href="{{ route('batches.index') }}">Batches</a>
+                                            </li>
+                                        @endcan
+                                        
+                                        @can('session_view')
+                                            <li>
+                                                <a href="{{ route('sessions.index') }}">Sessions</a>
+                                            </li>
+                                        @endcan
+                                        
+                                        @can('group_view')
+                                            <li>
+                                                <a href="{{ route('groups.index') }}">Groups</a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
 
-                        <li class="side-nav-item">
-                            <a href="{{ route('students.index') }}" class="side-nav-link">
-                                <i class="uil-graduation-hat"></i>
-                                <span> Students </span>
-                            </a>
-                        </li>
+                        @can('student_view')
+                            <li class="side-nav-item">
+                                <a href="{{ route('students.index') }}" class="side-nav-link">
+                                    <i class="uil-graduation-hat"></i>
+                                    <span> Students </span>
+                                </a>
+                            </li>
+                        @endcan
 
-                        <li class="side-nav-item">
-                            <a href="{{ route('defences.index') }}" class="side-nav-link">
-                                <i class="uil-file-check-alt"></i>
-                                <span> Alumnus </span>
-                            </a>
-                        </li>
+                        @can('defence_view')
+                            <li class="side-nav-item">
+                                <a href="{{ route('defences.index') }}" class="side-nav-link">
+                                    <i class="uil-file-check-alt"></i>
+                                    <span> Alumnus </span>
+                                </a>
+                            </li>
+                        @endcan
 
-                        <li class="side-nav-item">
-                            <a href="{{ route('teachers.index') }}" class="side-nav-link">
-                                <i class="dripicons-user-id"></i>
-                                <span> Teachers </span>
-                            </a>
-                        </li>
+                        @can('teacher_view')
+                            <li class="side-nav-item">
+                                <a href="{{ route('teachers.index') }}" class="side-nav-link">
+                                    <i class="dripicons-user-id"></i>
+                                    <span> Teachers </span>
+                                </a>
+                            </li>
+                        @endcan
 
-                        <li class="side-nav-item">
-                            <a href="apps-chat.html" class="side-nav-link">
-                                <i class="uil-shutter-alt"></i>
-                                <span> Events </span>
-                            </a>
-                        </li>
+                        @can('event_view')
+                            <li class="side-nav-item">
+                                <a href="apps-chat.html" class="side-nav-link">
+                                    <i class="uil-shutter-alt"></i>
+                                    <span> Events </span>
+                                </a>
+                            </li>
+                        @endcan
 
-                        <li class="side-nav-item">
-                            <a href="apps-chat.html" class="side-nav-link">
-                                <i class="uil-comment-notes"></i>
-                                <span> Notices </span>
-                            </a>
-                        </li>
-
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#RecycleBin" aria-expanded="false" aria-controls="RecycleBin" class="side-nav-link">
-                                <i class="uil-file-redo-alt"></i>
-                                <span> Recycle Bin </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="RecycleBin">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ url('user-restore') }}">Users</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('user-restore') }}">Students</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('user-restore') }}">Teachers</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        @can('notice_view')
+                            <li class="side-nav-item">
+                                <a href="apps-chat.html" class="side-nav-link">
+                                    <i class="uil-comment-notes"></i>
+                                    <span> Notices </span>
+                                </a>
+                            </li>
+                        @endcan
 
                         <li class="side-nav-title side-nav-item">System</li>
 
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#UserManagement" aria-expanded="false" aria-controls="UserManagement" class="side-nav-link">
-                                <i class="uil-weight"></i>
-                                <span> User Management </span>
-                                <span class="menu-arrow"></span>
-                            </a>
+                        @canany('user_view', 'role_view')
+                            <li class="side-nav-item">
+                                <a data-bs-toggle="collapse" href="#UserManagement" aria-expanded="false" aria-controls="UserManagement" class="side-nav-link">
+                                    <i class="uil-weight"></i>
+                                    <span> User Management </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
 
-                            <div class="collapse" id="UserManagement">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="{{ route('users.index') }}"> Users </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('roles.index') }}"> Roles </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                <div class="collapse" id="UserManagement">
+                                    <ul class="side-nav-second-level">
+                                        @can('user_view')
+                                            <li>
+                                                <a href="{{ route('users.index') }}"> Users </a>
+                                            </li>
+                                        @endcan
 
-                        <li class="side-nav-item">
-                            <a href="{{ url('settings') }}" class="side-nav-link">
-                                <i class="dripicons-gear noti-icon"></i>
-                                <span> Settings </span>
-                            </a>
-                        </li>
+                                        @can('role_view')
+                                            <li>
+                                                <a href="{{ route('roles.index') }}"> Roles </a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
+
+                        @can('setting_view')
+                            <li class="side-nav-item">
+                                <a href="{{ url('settings') }}" class="side-nav-link">
+                                    <i class="dripicons-gear noti-icon"></i>
+                                    <span> Settings </span>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
 
                     <div class="clearfix"></div>

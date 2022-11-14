@@ -11,10 +11,10 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Group List</li>
+                            <li class="breadcrumb-item active">Roles List</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Groups</h4>
+                    <h4 class="page-title">Roles</h4>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <a href="{{ route('groups.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Group</a>
+                                <a href="{{ route('roles.create') }}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Role</a>
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
@@ -54,17 +54,13 @@
                                         </th>
                                         <th>SL</th>
                                         <th>Name</th>
-                                        <th>Department</th>
-                                        <th>Batch</th>
-                                        <th>Session</th>
-                                        <th>Teacher</th>
-                                        <th>Topic</th>
-                                        <th>Status</th>
+                                        <th>Description</th>
+                                        <th>Created Date</th>
                                         <th style="width: 75px;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($groups as $group)
+                                    @foreach ($roles as $role)
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -73,24 +69,14 @@
                                                 </div>
                                             </td>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ $group->name ?? '' }}</td>
-                                            <td>{{ $group->session->batch->department->name ?? '' }}</td>
-                                            <td>{{ $group->session->batch->name ?? '' }}</td>
-                                            <td>{{ $group->session->name ?? '' }}</td>
-                                            <td>{{ $group->teacher->name ?? '' }}</td>
-                                            <td>{{ $group->topic_name ?? '' }}</td>
-                                            <td>
-                                                @if ($group->status == 0)
-                                                    <span class="badge badge-warning-lighten">Incomplete</span>
-                                                @elseif ($group->status == 1)
-                                                    <span class="badge badge-success-lighten">Complete</span>
-                                                @endif
-                                            </td>
+                                            <td>{{ $role->name ?? '' }}</td>
+                                            <td>{{ substr(strip_tags($role->description), 0 , 60) }}</td>
+                                            <td>{{ $role->created_at->format('d-m-Y') ?? '' }}</td>
         
                                             <td>
-                                                <form action="{{ route('groups.destroy', $group->id) }}" method="POST">
-                                                    <a href="{{ route('groups.show', $group->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a>
-                                                    <a href="{{ route('groups.edit', $group->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
+                                                    {{-- <a href="{{ route('roles.show', $role->id) }}" class="action-icon" id="view_button"> <i class="mdi mdi-eye"></i></a> --}}
+                                                    <a href="{{ route('roles.edit', $role->id) }}" class="action-icon" id="edit_button"> <i class="mdi mdi-square-edit-outline"></i></a>
 
                                                     @csrf
                                                     @method('DELETE')
@@ -117,14 +103,15 @@
         <script src="{{ asset('assets/js/vendor/dataTables.responsive.min.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/responsive.bootstrap5.min.js') }}"></script>
         <script src="{{ asset('assets/js/vendor/dataTables.checkboxes.min.js') }}"></script>
-
-        <script src="{{ asset('assets/js/pages/demo.groups.js') }}"></script>
+        
+        <script src="{{ asset('assets/js/pages/demo.permissions.js') }}"></script>
 
         <script>
             $('#notificationAlert').delay(3000).fadeOut('slow');     
                 $(document).ready(function() {
                     $('#DataTable').DataTable();
             });
+
 
             $('.show_confirm').click(function(event) {
                 var form =  $(this).closest("form");

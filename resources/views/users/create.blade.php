@@ -6,7 +6,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">User List</a></li>
                             <li class="breadcrumb-item active">User Create</li>
                         </ol>
                     </div>
@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation">
+                            <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
         
                                 @include('users.form')
