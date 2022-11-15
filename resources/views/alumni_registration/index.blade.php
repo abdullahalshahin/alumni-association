@@ -13,8 +13,8 @@
     <body class="loading" data-layout-config='{"darkMode":false}'>
         <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark">
             <div class="container">
-                <a href="index.html" class="navbar-brand me-lg-5">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="" class="logo-dark" height="18" />
+                <a href="{{ url('/') }}" class="navbar-brand me-lg-5">
+                    <h3 class="text-white fw-normal ">EUB</h3>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -163,6 +163,11 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                $('#notificationAlert').delay(5000).fadeOut('slow');     
+                    $(document).ready(function() {
+                        $('#DataTable').DataTable();
+                });
+
                 $('#registration_no').on('input',function() {
                     let registration_no = document.getElementById('registration_no').value;
 
