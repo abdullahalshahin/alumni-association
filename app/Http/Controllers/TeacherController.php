@@ -141,7 +141,9 @@ class TeacherController extends Controller {
             'status' => $request->inputState
         ]);
 
-        $teacher->assignRole($request->roles);
+        if ($request->roles) {
+            $teacher->assignRole($request->roles);
+        }
 
         return redirect()->route('teachers.index')
             ->with('success','Teacher update successfully.');

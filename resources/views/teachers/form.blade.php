@@ -19,7 +19,7 @@
     <div class="mb-3 col-md-6">
         <label for="gender">Gender</label>
         <select id="gender" name="gender" class="form-select" required>
-            <option selected>Choose</option>
+            <option value="" selected>Choose</option>
             <option value="1" {{ old('gender') ?? ( 1 == ($teachers->gender ?? '')) ? 'selected' : '' }}>Male</option>
             <option value="2" {{ old('gender') ?? ( 2 == ($teachers->gender ?? '')) ? 'selected' : '' }}>Female</option>
             <option value="3" {{ old('gender') ?? ( 3 == ($teachers->gender ?? '')) ? 'selected' : '' }}>Others</option>
@@ -53,7 +53,7 @@
     <div class="mb-3 col-md-6">
         <label for="roles">Permission</label>
         <select id="roles" name="roles" class="form-select" required>
-            <option selected>Choose</option>
+            <option  value="" selected>Choose</option>
             @foreach ($roles as $role)
                 <option value="{{ $role->id }}">{{ $role->name ?? '' }}</option>
             @endforeach
